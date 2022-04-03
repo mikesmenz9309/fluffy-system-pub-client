@@ -11,6 +11,8 @@ import OrderProvider from "../../utils/contexts-providers/order-provider";
 import { config } from "../../config";
 import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
+import useAuth from "../../hooks/use-auth";
+import useCart from "../../hooks/use-cart";
 import {
   UserCircleIcon,
   
@@ -29,7 +31,7 @@ const solutions = [
   {
     name: 'Home',
     description: 'Get a better understanding of where your traffic is coming from.',
-    href: '/profile',
+    href: '/',
     icon: HomeIcon,
   },
   {
@@ -78,6 +80,9 @@ function classNames(...classes) {
 
 export default function Layout({ children }) {
   const { eazeewash_tel } = config(process.env.NODE_ENV);
+  const { user, signOut } = useAuth();
+  const { itemsCount } = useCart();
+  // const [blockMenu, setBlockMenu] = useState();
   return (
     <Popover className="relative bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -85,11 +90,12 @@ export default function Layout({ children }) {
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <a href="#">
               <span className="sr-only">Workflow</span>
+              <NavLink to="/">
               <img
                 className="h-8 w-auto sm:h-10"
                 src={eaziwash_logo}
                 alt=""
-              />
+              /></NavLink>
             </a>
           </div>
           <div className="-mr-2 -my-2 md:hidden">
@@ -124,9 +130,10 @@ export default function Layout({ children }) {
                       <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                         <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
                           {solutions.map((item) => (
+                            <NavLink to={item.href}>
                             <a
                               key={item.name}
-                              href={item.href}
+                              
                               className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                             >
                               <item.icon className="flex-shrink-0 h-6 w-6 text-blue-600" aria-hidden="true" />
@@ -135,18 +142,20 @@ export default function Layout({ children }) {
                                 <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                               </div>
                             </a>
+                            </NavLink>
                           ))}
                         </div>
                         <div className="px-5 py-5 bg-gray-50 space-y-6 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
                           {callsToAction.map((item) => (
                             <div key={item.name} className="flow-root">
+                              <NavLink to={item.href}>
                               <a
-                                href={item.href}
+                                
                                 className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100"
                               >
                                 <item.icon className="flex-shrink-0 h-6 w-6 text-gray-400" aria-hidden="true" />
                                 <span className="ml-3">{item.name}</span>
-                              </a>
+                              </a></NavLink>
                             </div>
                           ))}
                         </div>
@@ -156,10 +165,27 @@ export default function Layout({ children }) {
                 </>
               )}
             </Popover>
+            <NavLink to="/">
 
-            <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
+            <a className="text-base font-medium text-gray-500 hover:text-gray-900">
+              Home
+            </a></NavLink>
+            
+            <NavLink to="/shop">
+
+            <a className="text-base font-medium text-gray-500 hover:text-gray-900">
               Shop
-            </a>
+            </a></NavLink>
+            <NavLink to="/profile">
+
+            <a className="text-base font-medium text-gray-500 hover:text-gray-900">
+              Profile
+            </a></NavLink>
+            <NavLink to="/cart">
+
+            <a className="text-base font-medium text-gray-500 hover:text-gray-900">
+            {itemsCount > 0 ? `CART(${itemsCount})` : "Cart"}
+            </a></NavLink>
             
 
             <Popover className="relative">
@@ -194,9 +220,10 @@ export default function Layout({ children }) {
                       <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                         <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
                           {resources.map((item) => (
+                            <NavLink to={item.href}>
                             <a
                               key={item.name}
-                              href={item.href}
+                              
                               className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                             >
                               <item.icon className="flex-shrink-0 h-6 w-6 text-blue-600" aria-hidden="true" />
@@ -204,7 +231,7 @@ export default function Layout({ children }) {
                                 <p className="text-base font-medium text-gray-900">{item.name}</p>
                                 <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                               </div>
-                            </a>
+                            </a></NavLink>
                           ))}
                         </div>
                         <div className="px-5 py-5 bg-gray-50 sm:px-8 sm:py-8">
@@ -235,15 +262,8 @@ export default function Layout({ children }) {
             </Popover>
           </Popover.Group>
           <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-            <a href="/login" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
-              Sign in
-            </a>
-            <a
-              href="/register"
-              className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700"
-            >
-              Sign up
-            </a>
+          {!user && <NavLink className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900" to="/login">SIGN IN</NavLink>}
+          {!user && <NavLink className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700" to="/register">Sign up</NavLink>}
           </div>
         </div>
       </div>
@@ -279,20 +299,22 @@ export default function Layout({ children }) {
               <div className="mt-6">
                 <nav className="grid gap-y-8">
                   {solutions.map((item) => (
+                    <NavLink to={item.href}>
                     <a
                       key={item.name}
-                      href={item.href}
+                      
                       className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
                     >
                       <item.icon className="flex-shrink-0 h-6 w-6 text-blue-600" aria-hidden="true" />
                       <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
-                    </a>
+                    </a></NavLink>
                   ))}
                 </nav>
               </div>
             </div>
             <div className="py-6 px-5 space-y-6">
               <div className="grid grid-cols-2 gap-y-4 gap-x-8">
+                
                 <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                   Pricing
                 </a>
@@ -301,27 +323,22 @@ export default function Layout({ children }) {
                   Docs
                 </a>
                 {resources.map((item) => (
+                  <NavLink to={item.href}>
                   <a
                     key={item.name}
-                    href={item.href}
+                    
                     className="text-base font-medium text-gray-900 hover:text-gray-700"
                   >
                     {item.name}
-                  </a>
+                  </a></NavLink>
                 ))}
               </div>
               <div>
-                <a
-                  href="/register"
-                  className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700"
-                >
-                  Sign up
-                </a>
+              
+              
                 <p className="mt-6 text-center text-base font-medium text-gray-500">
                   Existing customer?{' '}
-                  <a href="/login" className="text-blue-600 hover:text-blue-500">
-                    Sign in
-                  </a>
+                  {!user && <NavLink className="text-blue-600 hover:text-blue-500" to="/login">Login</NavLink>}
                 </p>
               </div>
             </div>
@@ -331,6 +348,9 @@ export default function Layout({ children }) {
       </Transition>
       <div className="flex justify-center items-center w-full p-4">
         <div>{children}</div>
+      
+      
+      
       </div>
       <div className="flex justify-center items-center dark:text-white w-full">
         <div className="flex flex-col items-center w-2/3">
