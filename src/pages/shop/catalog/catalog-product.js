@@ -15,6 +15,7 @@ import {
 import useOrderItem from "../../../hooks/use-order-item";
 // import AlertMessage from "../../../components/alerts/alert-message";
 import useCart from "../../../hooks/use-cart";
+import { LockClosedIcon } from "@heroicons/react/outline";
 
 export default function CatalogProduct({ product }) {
   // const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function CatalogProduct({ product }) {
           <h2 className="text-2xl font-extrabold tracking-tight text-gray-900"></h2>
   
           <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            {products.map((product) => (
+            
               <div key={product._id} className="group relative">
                 <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
                   <img
@@ -80,7 +81,7 @@ export default function CatalogProduct({ product }) {
                 Add To Cart
               </button> ) : null}
               </div>
-            ))}
+            ))
           </div>
         </div>
         </div>
