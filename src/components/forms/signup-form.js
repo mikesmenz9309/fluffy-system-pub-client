@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/use-auth";
@@ -103,7 +104,7 @@ export default function SignupForm({ callback }) {
                   autoComplete="password"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                  placeholder="Mobile Number"
+                  placeholder="Password"
                   {...register("password", { required: true })}
                 />
               </div>
@@ -123,8 +124,8 @@ export default function SignupForm({ callback }) {
               </div>
 
               <div className="text-sm">
-                <p className="text-sm font-small text-grey-600">Have an Account?  <a href="/login" className="font-medium text-blue-600 hover:text-blue-500">
-                  Login
+                <p className="text-sm font-small text-grey-600">Have an Account?  <a><NavLink to="/login" className="font-medium text-blue-600 hover:text-blue-500"> Login</NavLink>
+                  
                 </a></p>
                 
               </div>

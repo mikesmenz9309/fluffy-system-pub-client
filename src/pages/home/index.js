@@ -5,6 +5,7 @@ import useAuth from "../../hooks/use-auth";
 import { AnnotationIcon, GlobeAltIcon, LightningBoltIcon, ScaleIcon } from '@heroicons/react/outline'
 // import Lottie from 'react-lottie';
 import animationData from '../../lotties/93385-login';
+import Herocta from "../../components/structure/herocta";
 
 export default function Home() {
   const { signin, user } = useAuth();
@@ -51,7 +52,7 @@ export default function Home() {
     <PageLayout>
       
       <main className="mt-10 mx-auto hero-back max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-            <div className="sm:text-center lg:text-left">
+            <div className="sm:text-center lg:text-center mb-10">
               <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
                 <span className="block xl:inline">Welcome To</span>{' '}
                 <span className="block text-blue-600 xl:inline">EAZEEWASH</span> 
@@ -70,7 +71,7 @@ export default function Home() {
               <li>Satisfaction Guaranteed</li></ul>
               
               </p> */}
-              <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+              <div className="mt-5 mb-10 sm:mt-8 sm:flex sm:justify-center lg:justify-center">
                 <div className="rounded-md shadow">
                   <a
                     href="/login"
@@ -107,7 +108,7 @@ export default function Home() {
 
         {!user ? <LoginForm {...{ signin }} /> : null}
       </div> */}
-      <div className="mt-6 py-12 bg-blue-500 rounded-md">
+      <div className="mt-10 py-12 bg-blue-500 mb-10 rounded-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="lg:text-center">
           <h2 className="text-base text-white font-semibold tracking-wide uppercase">Dry Cleaning & Laundry</h2>
@@ -115,8 +116,7 @@ export default function Home() {
             A better way to get it done!
           </p>
           <p className="mt-4 max-w-2xl text-xl text-white lg:mx-auto">
-            Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in
-            accusamus quisquam.
+            
           </p>
         </div>
 
@@ -137,6 +137,7 @@ export default function Home() {
         </div>
       </div>
     </div>
+    <Herocta  />
     </main>
     </PageLayout>
   );

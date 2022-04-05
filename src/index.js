@@ -5,6 +5,7 @@ import "./styles/style.css";
 import reportWebVitals from "./reportWebVitals";
 import App from "./routes";
 import store from "./store";
+import 'flowbite';
 import { Provider } from "react-redux";
 
 ReactDOM.render(

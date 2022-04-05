@@ -12,17 +12,18 @@ export default function PaymentForm({ order }) {
   const { user } = useAuth();
 
   return order ? (
-    <div className="text-center flex-1 lg:p-10">
-      <h2 className="pb-2">Card Payment</h2>
+    <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-md w-full space-y-8">
+      <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Card Payment</h2>
       <div className="flex flex-col items-center bg-gray-100 rounded-lg">
-        <p className="text-left p-8">
+        <p className="text-center p-8">
           For accepting card payments, we have partnered with PayFast. Please
           checkout to be directed to the Payfast payment page to complete your
           order.
         </p>
         <div className="flex items-center justify-center w-full pb-5">
           <form
-            className="rounded-lg h-10 bg-blue-400 flex items-center justify-center space-y-1 hover:cursor-pointer"
+            className="mt-8 space-y-6"
             ref={formRef}
             action={payfast.live_url}
             method="post"
@@ -154,7 +155,10 @@ export default function PaymentForm({ order }) {
         </div>
       </div>
     </div>
+    </div>
+  
   ) : null;
+
 }
 PaymentForm.propTypes = {
   order: PropTypes.object,

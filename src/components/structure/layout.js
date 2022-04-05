@@ -12,10 +12,11 @@ import { config } from "../../config";
 import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import useAuth from "../../hooks/use-auth";
+import Footer from "./footer";
 import useCart from "../../hooks/use-cart";
 import {
   UserCircleIcon,
-  
+   
   MenuIcon,
   PhoneIcon,
   PlayIcon,
@@ -26,6 +27,7 @@ import {
   XIcon,
 } from '@heroicons/react/outline'
 import { ChevronDownIcon } from '@heroicons/react/solid'
+import Cart from "../../pages/cart";
 
 const solutions = [
   {
@@ -184,7 +186,8 @@ export default function Layout({ children }) {
             <NavLink to="/cart">
 
             <a className="text-base font-medium text-gray-500 hover:text-gray-900">
-            {itemsCount > 0 ? `CART(${itemsCount})` : "Cart"}
+            <ShoppingCartIcon className="flex-shrink-0 h-6 w-6 text-blue-600" aria-hidden="true" />
+            {itemsCount > 0 ?  `(${itemsCount})` : ''}
             </a></NavLink>
             
 
@@ -193,15 +196,15 @@ export default function Layout({ children }) {
                 <>
                   <Popover.Button
                     className={classNames(
-                      open ? 'text-gray-900' : 'text-gray-500',
-                      'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                      open ? 'text-white' : 'text-gray-100',
+                      'group pt-2 pb-2 pl-2 pr-2 bg-blue-500 rounded-md inline-flex items-center text-base font-medium hover:text-gray-0 focus:outline-none hover:bg-gray-500'
                     )}
                   >
                     <span>Quick Info</span>
                     <ChevronDownIcon
                       className={classNames(
-                        open ? 'text-gray-600' : 'text-gray-400',
-                        'ml-2 h-5 w-5 group-hover:text-gray-500'
+                        open ? 'text-gray-100' : 'text-gray-100',
+                        'ml-2 h-5 w-5 '
                       )}
                       aria-hidden="true"
                     />
@@ -262,8 +265,13 @@ export default function Layout({ children }) {
             </Popover>
           </Popover.Group>
           <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-          {!user && <NavLink className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900" to="/login">SIGN IN</NavLink>}
-          {!user && <NavLink className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700" to="/register">Sign up</NavLink>}
+          
+          {!user && <NavLink className="" to="/login"><button class="min-w-auto w-28 h-10 bg-blue-300 p-2 rounded-l-xl hover:bg-blue-500 transition-colors duration-50 hover:animate-pulse ease-out text-white font-semibold">
+        Log in
+      </button></NavLink>}
+          {!user && <NavLink className="" to="/register"><button class="min-w-auto w-28 h-10 bg-gray-300 p-2 rounded-r-xl hover:bg-gray-500 transition-colors duration-50 hover:animate-pulse ease-out text-white font-semibold">
+        Register
+      </button></NavLink>}
           </div>
         </div>
       </div>
@@ -315,13 +323,13 @@ export default function Layout({ children }) {
             <div className="py-6 px-5 space-y-6">
               <div className="grid grid-cols-2 gap-y-4 gap-x-8">
                 
-                <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
+                {/* <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                   Pricing
-                </a>
+                </a> */}
 
-                <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
+                {/* <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                   Docs
-                </a>
+                </a> */}
                 {resources.map((item) => (
                   <NavLink to={item.href}>
                   <a
@@ -336,10 +344,10 @@ export default function Layout({ children }) {
               <div>
               
               
-                <p className="mt-6 text-center text-base font-medium text-gray-500">
+                <button className="mt-6 text-center text-base font-medium text-gray-500">
                   Existing customer?{' '}
                   {!user && <NavLink className="text-blue-600 hover:text-blue-500" to="/login">Login</NavLink>}
-                </p>
+                </button>
               </div>
             </div>
           </div>
@@ -352,7 +360,14 @@ export default function Layout({ children }) {
       
       
       </div>
-      <div className="flex justify-center items-center dark:text-white w-full">
+      <Footer>
+      </Footer>
+      <div className="bg-gray-700 xl:text-center">
+        <span className="text-white  ">&copy; {new Date().getFullYear()} Mlo Solutions</span>
+        </div>
+      
+
+      {/* <div className="flex justify-center items-center dark:text-white w-full">
         <div className="flex flex-col items-center w-2/3">
           <div>
             <div className="flex flex-col items-center p-10">
@@ -436,11 +451,11 @@ export default function Layout({ children }) {
                   alt="logo not available"
                 />
               </span>
-              <span>Mlo Solutions</span>
+              <span></span>
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
     </Popover>
     
   
