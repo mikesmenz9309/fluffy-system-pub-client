@@ -185,13 +185,13 @@ export default function Layout({ children }) {
             <a className="text-base font-medium text-gray-500 hover:text-gray-900">
               Profile
             </a></NavLink>
-            <NavLink  onClick={() => setOpen(true)}>
+            <button className="text-base font-medium text-gray-500 hover:text-gray-900"  onClick={() => setOpen(true)}>
 
-            <a className="text-base font-medium text-gray-500 hover:text-gray-900">
+            
             <ShoppingCartIcon className="flex-shrink-0 h-6 w-6 text-blue-600" aria-hidden="true" />
             
             {itemsCount > 0 ?  `(${itemsCount})` : ''}
-            </a></NavLink>
+            </button>
             
 
             <Popover className="relative">
