@@ -8,6 +8,7 @@ export default function ItemSubtotal({ item, withLabel }) {
       {""}
       {(parseFloat(item.unit_price) || 0) * parseInt(item.qty)}
     </span>
+    
   );
 }
 

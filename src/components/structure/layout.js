@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import eaziwash_logo from "../../assets/eazee-wash-logo.png";
@@ -84,8 +84,10 @@ export default function Layout({ children }) {
   const { eazeewash_tel } = config(process.env.NODE_ENV);
   const { user, signOut } = useAuth();
   const { itemsCount } = useCart();
+  const [open, setOpen] = useState(true);
   // const [blockMenu, setBlockMenu] = useState();
   return (
+    
     <Popover className="relative bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
@@ -94,7 +96,7 @@ export default function Layout({ children }) {
               <span className="sr-only">Workflow</span>
               <NavLink to="/">
               <img
-                className="h-8 w-auto sm:h-10"
+                className="h-100 w-auto sm:h-10"
                 src={eaziwash_logo}
                 alt=""
               /></NavLink>
@@ -183,10 +185,11 @@ export default function Layout({ children }) {
             <a className="text-base font-medium text-gray-500 hover:text-gray-900">
               Profile
             </a></NavLink>
-            <NavLink to="/cart">
+            <NavLink  onClick={() => setOpen(true)}>
 
             <a className="text-base font-medium text-gray-500 hover:text-gray-900">
             <ShoppingCartIcon className="flex-shrink-0 h-6 w-6 text-blue-600" aria-hidden="true" />
+            
             {itemsCount > 0 ?  `(${itemsCount})` : ''}
             </a></NavLink>
             

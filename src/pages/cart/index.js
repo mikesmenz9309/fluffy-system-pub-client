@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from "react";
+
+import { Dialog, Transition } from '@headlessui/react'
+import { XIcon } from '@heroicons/react/outline'
+// import ItemSubtotal from './item-subtotal'
+// import OrderTotal from './order-total'
+// import { PageLayout } from '../../components/structure'
+// import { NavLink } from 'react-router-dom'
+import React, { useEffect, useState, Fragment } from "react";
 import { useDispatch } from "react-redux";
-import classNames from "classnames";
+// import classNames from "classnames";
 import {
   useNavigate,
   generatePath,
@@ -9,7 +16,7 @@ import {
 } from "react-router-dom";
 
 import {
-  incrementItemQty,
+  // incrementItemQty,
   decrementItemQty,
   createOrder,
   updateOrder,
@@ -23,10 +30,13 @@ import useOrderId from "../../hooks/use-order-id";
 import { PageLayout } from "../../components/structure";
 import OrderTotal from "./order-total";
 import ItemSubtotal from "./item-subtotal";
-import AlertMessage from "../../components/alerts/alert-message";
+// import AlertMessage from "../../components/alerts/alert-message";
 import useOrderItem from "../../hooks/use-order-item";
 
+
+
 export default function Cart() {
+  const [open, setOpen] = useState(true);
   const { id } = useParams();
   const { user } = useAuth();
   const dispatch = useDispatch();
@@ -46,19 +56,119 @@ export default function Cart() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, items.length]);
 
+
   return (
     <PageLayout>
-      {(() => {
-        setTimeout(() => setOrderItemMessage(), 1000);
-      })()}
-      <AlertMessage alertMessage={alertMessage} />
-      <div className="flex justify-between mb-4">
-        <OrderTotal {...{ items }} withLabel />
-        <div>
-          {items.length > 0 ? (
+    <Transition.Root show={open} as={Fragment}>
+      <Dialog as="div" className="fixed inset-0 overflow-hidden" onClose={setOpen}>
+        <div className="absolute inset-0 overflow-hidden">
+          <Transition.Child
+            as={Fragment}
+            enter="ease-in-out duration-500"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in-out duration-500"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          </Transition.Child>
+
+          <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+            <Transition.Child
+              as={Fragment}
+              enter="transform transition ease-in-out duration-500 sm:duration-700"
+              enterFrom="translate-x-full"
+              enterTo="translate-x-0"
+              leave="transform transition ease-in-out duration-500 sm:duration-700"
+              leaveFrom="translate-x-0"
+              leaveTo="translate-x-full"
+            >
+              <div className="pointer-events-auto w-screen max-w-md">
+                <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                  <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
+                    <div className="flex items-start justify-between">
+                      <Dialog.Title className="text-lg font-medium text-gray-900"> Shopping cart </Dialog.Title>
+                      <div className="ml-3 flex h-7 items-center">
+                        <button
+                          type="button"
+                          className="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                          onClick={() => setOpen(false)}
+                        >
+                          <span className="sr-only">Close panel</span>
+                          <XIcon className="h-6 w-6" aria-hidden="true" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="mt-8">
+                      <div className="flow-root">
+                        <ul role="list" className="-my-6 divide-y divide-gray-200">
+                          {items.map((item) => (
+                            <li key={item.id} className="flex py-6">
+                              <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                <img
+                                  src={item.img.dataUrl}
+                                  // alt={product.imageAlt}
+                                  className="h-full w-full object-cover object-center"
+                                />
+                              </div>
+
+                              <div className="ml-4 flex flex-1 flex-col">
+                                <div>
+                                  <div className="flex justify-between text-base font-medium text-gray-900">
+                                  <NavLink to={generatePath(`/cart/:_id`, item)}>
+                                    <h3>
+                                      
+                                      <a> {item.name} </a>
+                                    </h3></NavLink>
+                                    <p className="ml-4">{product.price}</p>
+                                  </div>
+                                  <p className="mt-1 text-sm text-gray-500">{item.description}</p>
+                                </div>
+                                <div className="flex flex-1 items-end justify-between text-sm">
+                                  <p className="text-gray-500">Qty {item.qty || 0}</p>
+
+                                  <div className="flex">
+                                    <button type="button" 
+                                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                                    onClick={() => {
+                                      if (item.qty === 1) {
+                                        dispatch(removeCartItem(item));
+                                      } else {
+                                        dispatch(decrementItemQty(item));
+                                      }
+                                      setOrderItemMessage({
+                                        message: `${item.name} quantity incremented!`,
+                                        itemName: item.name,
+                                        decrQTY: true,
+                                      });
+                                    }}
+                                    >
+                                      Remove
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
+                    <div className="flex justify-between text-base font-medium text-gray-900">
+                      <p>Subtotal</p>
+                      <ItemSubtotal item={product} withLabel />
+                    </div>
+                    <p className="mt-0.5 text-sm text-gray-500">Delivery Subtotal: R45.00</p>
+                    <OrderTotal {...{ items }} withLabel />
+                    <div className="mt-6">
+                    {items.length > 0 ? (
             <button
               className="font-bold hover:bg-blue-200 hover:text-black bg-blue-400 text-white rounded-lg p-1"
-              onClick={() => {
+                      onClick={() => {
                 if (!user) navigate(generatePath("/login", { replace: false }));
                 if (
                   !order ||
@@ -134,117 +244,15 @@ export default function Cart() {
               Visit shop
             </button>
           ) : null}
-        </div>
-      </div>
-
-      {items.length > 0 ? (
-        <div className="grid grid-cols-2 gap-x-4">
-          <div className="flex flex-col space-y-2">
-            <div className="table-data flex justify-between bg-gray-200 p-4 font-bold">
-              <h2>CART ITEMS</h2>
-              <h2 className="font-bold">QTY(+/-)</h2>
-            </div>
-            <ul className="flex flex-col space-y-4">
-              {items.map((item) => {
-                return (
-                  <li
-                    key={item._id}
-                    className="flex items-center justify-between space-x-4 hover:cursor-pointer"
-                  >
-                    <NavLink to={generatePath(`/cart/:_id`, item)}>
-                      <div className="flex flex-col items-start">
-                        <div className="w-36 hover:scale-125">
-                          <img src={item.img.dataUrl} alt="not available" />
-                        </div>
-                        <div
-                          className={classNames(
-                            "flex-1",
-                            item.name === itemMessage?.itemName
-                              ? itemMessage?.incrQty
-                                ? "rounded-lg bg-green-200"
-                                : itemMessage?.decrQTY
-                                ? "rounded-lg bg-red-200"
-                                : ""
-                              : ""
-                          )}
-                        >
-                          <div className="flex flex-col">
-                            <h3 className="font-bold">Product Information</h3>
-                            <span>{item.name}</span>
-                            <span className="">{item.description}</span>
-                            <span>Qty: {item.qty || 0}</span>
-                            <ItemSubtotal {...{ item }} withLabel />
-                          </div>
-                        </div>
-                      </div>
-                    </NavLink>
-                    <div className="flex justify-end space-x-4">
-                      <button
-                        className="font-bold w-10 h-10 hover:bg-blue-200 hover:text-black bg-blue-400 text-white rounded-lg p-1"
-                        onClick={() => {
-                          setOrderItemMessage({
-                            message: `${item.name} quantity incremented!`,
-                            itemName: item.name,
-                            incrQty: true,
-                          });
-                          dispatch(incrementItemQty(item));
-                        }}
-                      >
-                        +
-                      </button>
-                      <button
-                        className="font-bold w-10 h-10 hover:bg-red-200 hover:text-white border-2 border-gray-300 rounded-lg p-1"
-                        onClick={() => {
-                          if (item.qty === 1) {
-                            dispatch(removeCartItem(item));
-                          } else {
-                            dispatch(decrementItemQty(item));
-                          }
-                          setOrderItemMessage({
-                            message: `${item.name} quantity incremented!`,
-                            itemName: item.name,
-                            decrQTY: true,
-                          });
-                        }}
-                      >
-                        -
-                      </button>
                     </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          {product ? (
-            <div className="table-data flex flex-col space-y-4 sticky top-0">
-              <div className="hover:cursor-pointer">
-                <div>
-                  <img src={product.img.dataUrl} alt="not available" />
-                </div>
-                <div>
-                  <h3 className="font-bold">Product Information</h3>
-                  <div className="flex flex-col">
-                    <span>{product.name}</span>
-                    <span>{product.description}</span>
-                    <span>Qty: {product.qty || 0}</span>
-                    <ItemSubtotal item={product} withLabel />
                   </div>
                 </div>
               </div>
-            </div>
-          ) : null}
+            </Transition.Child>
+          </div>
         </div>
-      ) : (
-        <div className="lg:p-20 p-5 rounded-lg bg-gray-300 w-full flex items-center justify-center">
-          <p className="font-bold">
-            Cart is empty,{" "}
-            <span className="text-blue-500">
-              <NavLink to="/shop">visit shop</NavLink>
-            </span>{" "}
-            to add items for your order.
-          </p>
-        </div>
-      )}
+      </Dialog>
+    </Transition.Root>
     </PageLayout>
-  );
+  )
 }
