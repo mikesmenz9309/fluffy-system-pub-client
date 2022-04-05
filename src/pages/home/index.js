@@ -137,7 +137,7 @@ export default function Home() {
         </div>
       </div>
     </div>
-    <Herocta  />
+    {/* <Herocta  /> */}
     </main>
     </PageLayout>
   );
